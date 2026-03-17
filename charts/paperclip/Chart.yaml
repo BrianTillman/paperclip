@@ -8,11 +8,11 @@ keywords:
   - paperclip
   - ai
   - agents
-home: https://github.com/paperclipai/paperclip
+home: https://github.com/BrianTillman/paperclip
 sources:
-  - https://github.com/paperclipai/paperclip
+  - https://github.com/BrianTillman/paperclip
 maintainers:
-  - name: paperclipai
+  - name: BrianTillman
 dependencies:
   - name: postgresql
     version: ">=16.0.0"
