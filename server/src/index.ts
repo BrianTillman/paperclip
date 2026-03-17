@@ -93,8 +93,8 @@ export async function startServer(): Promise<StartedServer> {
   }
   
   async function promptApplyMigrations(migrations: string[]): Promise<boolean> {
-    if (process.env.PAPERCLIP_MIGRATION_PROMPT === "never") return false;
     if (process.env.PAPERCLIP_MIGRATION_AUTO_APPLY === "true") return true;
+    if (process.env.PAPERCLIP_MIGRATION_PROMPT === "never") return false;
     if (!stdin.isTTY || !stdout.isTTY) return true;
   
     const prompt = createInterface({ input: stdin, output: stdout });
@@ -236,7 +236,9 @@ export async function startServer(): Promise<StartedServer> {
     | { mode: "external-postgres"; connectionString: string }
     | { mode: "embedded-postgres"; dataDir: string; port: number };
   if (config.databaseUrl) {
-    migrationSummary = await ensureMigrations(config.databaseUrl, "PostgreSQL");
+    migrationSummary = await ensureMigrations(config.databaseUrl, "PostgreSQL", {
+      autoApply: process.env.PAPERCLIP_MIGRATION_AUTO_APPLY === "true",
+    });
   
     db = createDb(config.databaseUrl);
     logger.info("Using external PostgreSQL via DATABASE_URL/config");
